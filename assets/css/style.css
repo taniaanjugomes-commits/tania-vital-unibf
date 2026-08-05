@@ -541,6 +541,85 @@ section { padding: 96px 0; }
 @media (max-width: 900px) { .modal-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px) { .modal-grid { grid-template-columns: 1fr; } }
 
+/* ---------- Oferta Cursos Livres ---------- */
+.extensao { background: var(--paper); padding-top: 0; }
+.extensao__card {
+  background: #fff;
+  border-radius: var(--radius-l);
+  box-shadow: var(--shadow-md);
+  padding: 40px;
+}
+.extensao__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 30px;
+  flex-wrap: wrap;
+  padding-bottom: 28px;
+  border-bottom: 2px dashed var(--line);
+  margin-bottom: 28px;
+}
+.extensao__head h2 {
+  margin-top: 12px;
+  font-size: clamp(24px, 3vw, 32px);
+  color: var(--navy);
+  line-height: 1.18;
+}
+.extensao__head h2 em { font-style: italic; color: var(--lime-deep); }
+.extensao__head p { margin-top: 12px; color: var(--muted); max-width: 440px; font-size: 15.5px; }
+.extensao__badge {
+  flex: none;
+  background: var(--navy);
+  color: #fff;
+  border-radius: var(--radius-m);
+  padding: 16px 22px;
+  text-align: center;
+  transform: rotate(-2deg);
+}
+.extensao__badge span { display: block; font-size: 11.5px; color: rgba(255,255,255,0.65); text-transform: uppercase; letter-spacing: 0.05em; }
+.extensao__badge strong { display: block; font-family: "Fraunces", serif; font-size: 24px; color: var(--lime); margin-top: 2px; }
+
+.extensao__tables {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+}
+.extensao__table h3 {
+  font-family: "Fraunces", serif;
+  font-size: 16.5px;
+  color: var(--navy);
+  margin-bottom: 12px;
+}
+.price-list li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 11px 0;
+  border-bottom: 1px dashed var(--line);
+  font-size: 14.5px;
+}
+.price-list li span { color: var(--ink); flex: 1; }
+.price-list li s { color: var(--muted-soft); font-size: 13px; white-space: nowrap; }
+.price-list li b { color: var(--lime-deep); font-size: 16px; white-space: nowrap; }
+
+.extensao__footer {
+  margin-top: 30px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line-soft);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.extensao__footer p { color: var(--muted); font-size: 13.5px; max-width: 340px; }
+
+@media (max-width: 720px) {
+  .extensao__card { padding: 28px 20px; }
+  .extensao__tables { grid-template-columns: 1fr; gap: 22px; }
+}
+
 /* ---------- Catálogo (signature: ficha de matrícula) ---------- */
 .catalogo {
   background: var(--navy);
