@@ -52,6 +52,13 @@
         tabsWrap.appendChild(btn);
       });
 
+      document.querySelectorAll("[data-jump-tab]").forEach(function (link) {
+        link.addEventListener("click", function () {
+          var targetBtn = tabsWrap.querySelector('.catalogo__tab[data-id="' + link.getAttribute("data-jump-tab") + '"]');
+          if (targetBtn) targetBtn.click();
+        });
+      });
+
       function renderTabs() {
         tabsWrap.querySelectorAll(".catalogo__tab").forEach(function (b) {
           b.classList.toggle("is-active", b.dataset.id === activeId);

@@ -526,6 +526,8 @@ section { padding: 96px 0; }
   font-size: 21px;
   color: var(--navy);
 }
+.modal-card__title-link { transition: opacity .15s ease; }
+.modal-card__title-link:hover { opacity: 0.7; text-decoration: underline; }
 .modal-card p { color: var(--muted); font-size: 14.5px; flex: 1; }
 .modal-card__link {
   display: inline-flex;
