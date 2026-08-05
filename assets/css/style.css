@@ -1,5 +1,5 @@
 /* =========================================================
-   Tânia Vital × UniBF — página pessoal de embaixadora
+   Tania Vital × UniBF — página pessoal de embaixadora
    Tokens: navy institucional + lima da marca + papel areia
    Tipografia: Fraunces (display) + Inter (corpo/UI)
    ========================================================= */
@@ -848,7 +848,7 @@ section { padding: 96px 0; }
 @media (max-width: 980px) { .depo-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px) { .depo-grid { grid-template-columns: 1fr; } }
 
-/* ---------- Sobre a Tânia ---------- */
+/* ---------- Sobre a Tania ---------- */
 .sobre {
   background: var(--paper);
 }

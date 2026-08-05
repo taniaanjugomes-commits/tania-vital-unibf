@@ -59,7 +59,7 @@
       }
 
       function courseMsg(course, cat) {
-        return "Olá Tânia! Quero saber mais sobre o curso de " + course + " (" + cat.label + " — " + cat.duration + ").";
+        return "Olá Tania! Quero saber mais sobre o curso de " + course + " (" + cat.label + " — " + cat.duration + ").";
       }
 
       function linkRow(course, cat) {
@@ -77,7 +77,7 @@
       }
 
       function emptyRow() {
-        return '<li class="course-list__empty">Nenhum curso encontrado com esse termo. Tente outra palavra ou <a href="' + waLink("Olá Tânia! Não encontrei o curso que procuro no site, pode me ajudar?") + '" target="_blank" rel="noopener" style="color:var(--navy);font-weight:700;text-decoration:underline;">fale comigo direto</a>.</li>';
+        return '<li class="course-list__empty">Nenhum curso encontrado com esse termo. Tente outra palavra ou <a href="' + waLink("Olá Tania! Não encontrei o curso que procuro no site, pode me ajudar?") + '" target="_blank" rel="noopener" style="color:var(--navy);font-weight:700;text-decoration:underline;">fale comigo direto</a>.</li>';
       }
 
       function renderPanel(cat) {
