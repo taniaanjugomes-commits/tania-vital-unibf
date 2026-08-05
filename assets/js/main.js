@@ -47,7 +47,7 @@
           activeId = cat.id;
           searchInput.value = "";
           renderTabs();
-          renderPanel(cat, "");
+          renderPanel(cat);
         });
         tabsWrap.appendChild(btn);
       });
@@ -62,23 +62,28 @@
         return "Olá Tânia! Quero saber mais sobre o curso de " + course + " (" + cat.label + " — " + cat.duration + ").";
       }
 
-      function renderPanel(cat, query) {
-        var q = (query || "").trim().toLowerCase();
-        var list = cat.courses.filter(function (c) { return c.toLowerCase().indexOf(q) !== -1; });
+      function linkRow(course, cat) {
+        return (
+          '<li class="course-row">' +
+            '<span class="course-row__name">' + course +
+              (cat && cat.showMeta ? '<span class="course-row__meta">' + cat.label + " · " + cat.duration + "</span>" : "") +
+            "</span>" +
+            '<a class="course-row__link" href="' + waLink(courseMsg(course, cat)) + '" target="_blank" rel="noopener">' +
+              "Fale comigo" +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg>' +
+            "</a>" +
+          "</li>"
+        );
+      }
 
-        var rowsHtml = list.length
-          ? list.map(function (course) {
-              return (
-                '<li class="course-row">' +
-                  '<span class="course-row__name">' + course + "</span>" +
-                  '<a class="course-row__link" href="' + waLink(courseMsg(course, cat)) + '" target="_blank" rel="noopener">' +
-                    "Fale comigo" +
-                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg>' +
-                  "</a>" +
-                "</li>"
-              );
-            }).join("")
-          : '<li class="course-list__empty">Nenhum curso encontrado com esse termo. Tente outra palavra ou <a href="' + waLink("Olá Tânia! Não encontrei o curso que procuro no site, pode me ajudar?") + '" target="_blank" rel="noopener" style="color:var(--navy);font-weight:700;text-decoration:underline;">fale comigo direto</a>.</li>';
+      function emptyRow() {
+        return '<li class="course-list__empty">Nenhum curso encontrado com esse termo. Tente outra palavra ou <a href="' + waLink("Olá Tânia! Não encontrei o curso que procuro no site, pode me ajudar?") + '" target="_blank" rel="noopener" style="color:var(--navy);font-weight:700;text-decoration:underline;">fale comigo direto</a>.</li>';
+      }
+
+      function renderPanel(cat) {
+        var rowsHtml = cat.courses.length
+          ? cat.courses.map(function (course) { return linkRow(course, cat); }).join("")
+          : emptyRow();
 
         panel.innerHTML =
           '<div class="ticket-panel__head">' +
@@ -92,12 +97,45 @@
           '<ul class="course-list">' + rowsHtml + "</ul>";
       }
 
-      renderPanel(COURSE_CATEGORIES[0], "");
+      function renderSearch(query) {
+        var q = query.trim().toLowerCase();
+        var matches = [];
+        COURSE_CATEGORIES.forEach(function (cat) {
+          if (cat.id === "segunda-graduacao") return;
+          cat.courses.forEach(function (course) {
+            if (course.toLowerCase().indexOf(q) !== -1) {
+              matches.push({ course: course, cat: Object.assign({ showMeta: true }, cat) });
+            }
+          });
+        });
+
+        var rowsHtml = matches.length
+          ? matches.map(function (m) { return linkRow(m.course, m.cat); }).join("")
+          : emptyRow();
+
+        panel.innerHTML =
+          '<div class="ticket-panel__head">' +
+            "<div>" +
+              '<h3>Resultados para "' + query + '"</h3>' +
+              '<div class="dur">' + matches.length + " curso(s) encontrado(s)</div>" +
+            "</div>" +
+            '<div class="ticket-panel__stamp">BUSCA</div>' +
+          "</div>" +
+          (matches.length ? '<div class="ticket-panel__note">Esses cursos também estão disponíveis pela Segunda Graduação para quem já tem diploma.</div>' : "") +
+          '<ul class="course-list">' + rowsHtml + "</ul>";
+      }
+
+      renderPanel(COURSE_CATEGORIES[0]);
 
       if (searchInput) {
         searchInput.addEventListener("input", function () {
-          var cat = COURSE_CATEGORIES.find(function (c) { return c.id === activeId; });
-          renderPanel(cat, searchInput.value);
+          var query = searchInput.value;
+          if (query.trim() === "") {
+            renderTabs();
+            renderPanel(COURSE_CATEGORIES.find(function (c) { return c.id === activeId; }));
+          } else {
+            renderSearch(query);
+          }
         });
       }
     }
