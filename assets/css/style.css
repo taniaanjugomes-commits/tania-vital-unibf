@@ -1,24 +1,24 @@
 /* =========================================================
-   Tania Vital × UniBF — página pessoal de embaixadora
-   Tokens: navy institucional + lima da marca + papel areia
+   Tania Vital — identidade própria
+   Tokens: terracota/vinho + dourado + papel creme
    Tipografia: Fraunces (display) + Inter (corpo/UI)
    ========================================================= */
 
 :root {
-  --navy: #0a2e4d;
-  --navy-deep: #061c30;
-  --navy-mid: #123a5e;
-  --lime: #8ef027;
-  --lime-deep: #5fbe10;
-  --lime-soft: #eafccb;
-  --paper: #fbf9f5;
-  --sand: #f1ebdc;
-  --sand-deep: #e6d9bf;
-  --ink: #16232e;
-  --muted: #5c6773;
-  --muted-soft: #8b93a0;
-  --line: rgba(10, 46, 77, 0.13);
-  --line-soft: rgba(10, 46, 77, 0.07);
+  --navy: #5c2a1e;
+  --navy-deep: #2a1410;
+  --navy-mid: #6b3324;
+  --lime: #c9a227;
+  --lime-deep: #a9821c;
+  --lime-soft: #f7ecc9;
+  --paper: #f7f1e6;
+  --sand: #efe3d0;
+  --sand-deep: #e0cca8;
+  --ink: #2b211c;
+  --muted: #6b5f55;
+  --muted-soft: #9c8f82;
+  --line: rgba(92, 42, 30, 0.15);
+  --line-soft: rgba(92, 42, 30, 0.08);
   --whatsapp: #22c55e;
   --whatsapp-deep: #16a34a;
   --shadow-sm: 0 2px 10px rgba(10, 30, 50, 0.08);
@@ -159,7 +159,7 @@ section { padding: 96px 0; }
   position: sticky;
   top: 0;
   z-index: 60;
-  background: rgba(251, 249, 245, 0.86);
+  background: rgba(247, 241, 230, 0.86);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line-soft);
 }
@@ -252,7 +252,7 @@ section { padding: 96px 0; }
   padding: 64px 0 100px;
   overflow: hidden;
   background:
-    radial-gradient(1100px 520px at 82% -12%, rgba(142,240,39,0.16), transparent 60%),
+    radial-gradient(1100px 520px at 82% -12%, rgba(201,162,39,0.16), transparent 60%),
     var(--paper);
 }
 .hero__grid {
@@ -441,7 +441,7 @@ section { padding: 96px 0; }
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(600px 300px at 10% 110%, rgba(142,240,39,0.18), transparent 60%);
+  background: radial-gradient(600px 300px at 10% 110%, rgba(201,162,39,0.18), transparent 60%);
 }
 .offer__inner {
   position: relative;
