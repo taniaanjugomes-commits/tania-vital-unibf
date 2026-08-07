@@ -955,35 +955,32 @@ section { padding: 96px 0; }
 .sobre {
   background: var(--paper);
 }
-.sobre__banner {
-  width: 100%;
-  height: auto;
+.sobre__grid {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 56px;
+  align-items: center;
+}
+.sobre__photo {
   border-radius: var(--radius-l);
+  overflow: hidden;
   box-shadow: var(--shadow-md);
+  aspect-ratio: 3/4;
 }
-.sobre__mobile-text { display: none; }
-.sobre__cta {
-  display: flex;
-  justify-content: center;
-  margin-top: 34px;
+.sobre__photo img { width: 100%; height: 100%; object-fit: cover; }
+.sobre__content blockquote {
+  font-family: "Fraunces", serif;
+  font-size: clamp(22px, 2.6vw, 30px);
+  line-height: 1.32;
+  color: var(--navy);
+  margin: 18px 0 24px;
 }
+.sobre__content blockquote em { color: var(--lime-deep); font-style: italic; }
+.sobre__signature { display: flex; align-items: center; gap: 14px; margin-top: 26px; }
 
-@media (max-width: 719px) {
-  .sobre__banner { max-width: 320px; margin: 0 auto; display: block; }
-  .sobre__mobile-text {
-    display: block;
-    max-width: 480px;
-    margin: 26px auto 0;
-    text-align: center;
-  }
-  .sobre__mobile-text blockquote {
-    font-size: 22px;
-    line-height: 1.32;
-    color: var(--navy);
-    margin: 14px 0 16px;
-  }
-  .sobre__mobile-text blockquote em { color: var(--lime-deep); font-style: italic; }
-  .sobre__mobile-text p { color: var(--muted); font-size: 15px; }
+@media (max-width: 900px) {
+  .sobre__grid { grid-template-columns: 1fr; }
+  .sobre__photo { max-width: 320px; margin: 0 auto; }
 }
 
 /* ---------- FAQ ---------- */
