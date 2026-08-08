@@ -523,6 +523,7 @@ section { padding: 96px 0; }
     display: block;
     position: relative;
     padding-left: 300px;
+    margin-bottom: 190px;
   }
   .modalidades__photo {
     position: absolute;
