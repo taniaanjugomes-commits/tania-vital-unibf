@@ -518,7 +518,28 @@ section { padding: 96px 0; }
 @media (max-width: 480px) {
   .modalidades__photo { width: 68px; }
 }
+@media (min-width: 721px) {
+  .modalidades__head {
+    display: block;
+    position: relative;
+    padding-left: 300px;
+  }
+  .modalidades__photo {
+    position: absolute;
+    left: 0;
+    top: -18px;
+    width: 280px;
+    z-index: 1;
+  }
+  .modalidades__head .section-head {
+    position: relative;
+    z-index: 2;
+    padding-bottom: 0;
+  }
+}
 .modal-grid {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
