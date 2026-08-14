@@ -567,8 +567,18 @@
       if (raf !== null) { cancelAnimationFrame(raf); raf = null; }
     }
 
+    /* ?video=1 e so para a Tania conferir o video no computador dela quando
+       o Windows esta com animacoes desligadas. Ignora apenas o portao de
+       movimento reduzido, nunca os de tamanho e de toque: forcar video em
+       celular continua proibido. */
+    var previewVideo = new URLSearchParams(location.search).get("video") === "1";
+
     function applyHeroMode() {
-      if (MQLS.some(function (m) { return m.matches; })) disableScrub();
+      var blocked = MQLS.some(function (m, i) {
+        if (previewVideo && i === 4) return false;   // 4 = prefers-reduced-motion
+        return m.matches;
+      });
+      if (blocked) disableScrub();
       else enableScrub();
     }
     MQLS.forEach(function (m) { m.addEventListener("change", applyHeroMode); });

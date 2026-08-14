@@ -15,6 +15,7 @@ const types = {
   ".jpg": "image/jpeg",
   ".jpeg": "image/jpeg",
   ".ico": "image/x-icon",
+  ".mp4": "video/mp4",
 };
 
 http.createServer((req, res) => {
