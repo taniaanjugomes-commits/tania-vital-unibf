@@ -354,7 +354,14 @@ main{position:relative}
 /* =========================================================
    O CAMINHO (momento interativo)
    ========================================================= */
-.path{background:var(--cocoa);color:var(--canvas);overflow:hidden}
+.path{background:var(--cocoa);color:var(--canvas);overflow:hidden;position:relative}
+/* o caderno aberto atras, no sussurro: da profundidade sem disputar leitura */
+.path::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:url("../img/fundo-caderno.webp") center right / cover no-repeat;
+  opacity:.13;mix-blend-mode:luminosity}
+.path::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(94deg,var(--cocoa) 6%,rgba(86,52,25,.82) 44%,rgba(86,52,25,.55) 100%)}
+.path > *{position:relative;z-index:1}
 .path .shead h2{color:var(--canvas)}
 .path__grid{margin-top:38px;display:grid;gap:26px}
 .path__steps{display:grid;gap:12px}
@@ -602,11 +609,16 @@ main{position:relative}
 /* =========================================================
    CHAMADA FINAL
    ========================================================= */
-.final{background:linear-gradient(168deg,var(--cocoa) 0%,var(--cocoa-deep) 100%);color:var(--canvas);
+/* a cadeira vazia esperando, atras de "vamos conversar sobre o seu futuro" */
+.final{background:var(--cocoa-deep);color:var(--canvas);
        text-align:center;position:relative;overflow:hidden}
+.final__bg{position:absolute;inset:0;pointer-events:none;
+  background:url("../img/fundo-cadeira.webp") center 38% / cover no-repeat;opacity:.30}
 .final::before{content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(620px 320px at 50% 118%,rgba(203,154,101,.24),transparent 66%)}
-.final .inner{position:relative}
+  background:
+    linear-gradient(168deg,rgba(86,52,25,.86) 0%,rgba(46,26,12,.94) 100%),
+    radial-gradient(620px 320px at 50% 118%,rgba(203,154,101,.26),transparent 66%)}
+.final .inner{position:relative;z-index:1}
 .final h2{font-family:"Instrument Serif",Georgia,serif;font-weight:400;
           font-size:clamp(31px,7.6vw,46px);line-height:1.1;max-width:18ch;margin:0 auto}
 .final h2 em{font-style:italic;color:var(--honey)}
