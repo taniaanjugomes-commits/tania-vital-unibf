@@ -501,6 +501,25 @@ main{position:relative}
 }
 
 /* =========================================================
+   TESTE DE PEDAGOGIA
+   Fica entre as modalidades e o catalogo, com tratamento
+   proprio para nao repetir o esqueleto de nenhum vizinho.
+   ========================================================= */
+.quiz{background:var(--canvas);padding:0 0 76px}
+.quiz__inner{display:flex;flex-direction:column;gap:20px;
+  background:var(--canvas-2);border:1px solid var(--line);border-left:4px solid var(--honey);
+  border-radius:var(--r-m);padding:26px 22px}
+.quiz__txt h2{font-family:"Instrument Serif",Georgia,serif;font-weight:400;
+  font-size:clamp(23px,5vw,29px);color:var(--cocoa);line-height:1.16;margin-top:11px}
+.quiz__txt p{margin-top:9px;color:var(--muted);font-size:15px;max-width:48ch}
+.quiz__go{align-self:flex-start;flex:none;white-space:nowrap}
+@media (min-width:721px){
+  .quiz{padding-bottom:104px}
+  .quiz__inner{flex-direction:row;align-items:center;justify-content:space-between;
+    gap:34px;padding:30px 34px}
+}
+
+/* =========================================================
    CATALOGO
    ========================================================= */
 .cat{background:var(--cocoa);color:var(--canvas)}
