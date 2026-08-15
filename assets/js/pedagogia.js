@@ -79,7 +79,7 @@
     q6: {
       sozinha: "Você se organiza sozinha, que é o que o estudo a distância mais exige.",
       prazo: "Você funciona bem com prazo e meta clara, e o curso te dá os dois.",
-      acompanha: "Você rende mais com alguém acompanhando de perto. Então você vai render, porque acompanhar de perto é exatamente o que eu faço.",
+      acompanha: "Você rende mais com alguém acompanhando de perto. No curso a tutoria da UniBF responde suas dúvidas pelo portal do aluno, e quando alguma coisa não anda você me chama que eu destravo.",
       recomeco: "Você já parou coisas quando a vida apertou e quer fazer diferente agora. Quem chega falando isso costuma terminar, porque entrou sabendo."
     },
     q7: {
@@ -101,11 +101,11 @@
       rapido: "Você gosta de ver resultado rápido, e educação não entrega isso. Vale conversarmos sobre onde o retorno apareceria mais cedo pra você."
     },
     q4: {
-      opcoes: "O estágio ainda está em aberto. Me chama que a gente monta o seu, é a parte que eu mais faço com meus alunos.",
-      dificil: "O estágio seria apertado na sua rotina de hoje. Não é impeditivo, e é a primeira coisa que a gente resolve junto."
+      opcoes: "O estágio ainda está em aberto. Quem orienta cada passo dele é a tutoria da UniBF, pelo portal do aluno. Me chama antes que eu te explico como funciona, pra você decidir sabendo.",
+      dificil: "O estágio seria apertado na sua rotina de hoje. Não é impeditivo, mas é a parte que você precisa entender antes de decidir. Me chama que eu te explico como ele funciona."
     },
     q5: {
-      montar: "Você ainda vai montar a sua rotina de estudo. Comece por aí, que eu te ajudo a desenhar uma que caiba na sua semana."
+      montar: "Você ainda vai montar a sua rotina de estudo. Vale começar por aí, porque é o que mais decide quem termina o curso e quem para no meio."
     }
   };
 
@@ -127,21 +127,25 @@
 
   var ELOGIO_HONESTIDADE = "Você respondeu com honestidade em vez de marcar o que soaria bonito. Isso já diz muito sobre você.";
 
+  // Só cabem quatro forças na tela, então as que mais tranquilizam vêm primeiro.
+  // A q6 fala do apoio que ela vai ter, e é justamente a que não pode ficar de fora.
+  var ORDEM_FORCAS = ["q1", "q6", "q8", "q3", "q4", "q5", "q2", "q7"];
+
   var VEREDITOS = {
     sim: {
       titulo: "Pedagogia é o seu caminho.",
       lead: "Eu não digo isso por educação. Digo porque as suas respostas se encaixam de um jeito que eu reconheço bem: é o mesmo perfil de gente que eu vi entrar insegura e sair com o diploma na mão.",
       tituloForcas: "O que joga a seu favor",
-      tituloPontos: "O que a gente resolve junto",
+      tituloPontos: "O que vale conversar antes de começar",
       tituloFala: "Quer conversar sobre isso comigo?",
       grana: true
     },
     junto: {
-      titulo: "Pedagogia combina com você, e tem um detalhe pra gente resolver junto.",
-      lead: "O que mais importa já está no lugar. Ficou uma coisa em aberto, e é justamente a parte em que eu entro. Ninguém resolve isso sozinha, e você não precisa.",
+      titulo: "Pedagogia combina com você, e tem um ponto pra gente conversar antes.",
+      lead: "O que mais importa já está no lugar. Ficou uma coisa em aberto, e é bem melhor você olhar pra ela agora do que no meio do curso. Me chama que a gente conversa sobre isso antes de você decidir.",
       tituloForcas: "O que já está no lugar",
-      tituloPontos: "O que a gente resolve junto",
-      tituloFala: "Vamos resolver esse ponto?",
+      tituloPontos: "O que vale conversar antes de começar",
+      tituloFala: "Vamos conversar sobre esse ponto?",
       grana: true
     },
     gestao: {
@@ -172,7 +176,7 @@
 
   var MENSAGENS = {
     sim: "Fiz o teste de Pedagogia na sua página e o resultado foi que Pedagogia é o meu caminho. Quero conversar sobre isso.",
-    junto: "Fiz o teste de Pedagogia na sua página. O resultado foi que combina comigo, mas tem um ponto pra resolver. Quero resolver ele com você.",
+    junto: "Fiz o teste de Pedagogia na sua página. O resultado foi que combina comigo, mas tem um ponto pra conversar antes. Queria falar sobre isso com você.",
     gestao: "Fiz o teste de Pedagogia na sua página. O resultado foi que Pedagogia serve pro que eu quero, com um aviso. Quero entender melhor.",
     explorando: "Fiz o teste de Pedagogia na sua página. Ainda estou conhecendo o curso e o resultado disse pra eu conversar com você antes de decidir.",
     outro: "Fiz o teste de Pedagogia na sua página e o resultado foi que talvez Pedagogia não seja o melhor pra mim. Quero ver o que combina mais."
@@ -237,10 +241,12 @@
     }, 0);
   }
 
-  function colher(banco, mapa) {
+  function colher(banco, mapa, ordem) {
+    var chaves = ordem || Object.keys(banco);
     var achados = [];
-    Object.keys(banco).forEach(function (nome) {
-      var frase = banco[nome][mapa[nome]];
+    chaves.forEach(function (nome) {
+      var faixa = banco[nome];
+      var frase = faixa && faixa[mapa[nome]];
       if (frase) achados.push(frase);
     });
     return achados;
@@ -383,7 +389,7 @@
     vereditoAtual = decidir(mapa);
 
     var texto = VEREDITOS[vereditoAtual];
-    var forcas = colher(FORCAS, mapa);
+    var forcas = colher(FORCAS, mapa, ORDEM_FORCAS);
     var pontos = colher(PONTOS, mapa);
 
     if (vereditoAtual === "explorando") {
