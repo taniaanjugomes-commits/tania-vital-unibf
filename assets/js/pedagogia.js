@@ -445,7 +445,35 @@
   document.getElementById("btnRefazer2").addEventListener("click", refazer);
 
   /* ---------------------------------------------------------
-     11 · Arranque
+     11 · Abertura no topo
+     O navegador devolve a pessoa onde ela parou na visita anterior,
+     e a pagina abria no meio. Com ancora na URL o salto continua.
+     --------------------------------------------------------- */
+
+  (function () {
+    var mexeu = false;
+    function marcar() { mexeu = true; }
+
+    function aoTopo() {
+      if (location.hash || mexeu) return;
+      try {
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      } catch (e) {
+        window.scrollTo(0, 0);
+      }
+    }
+
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    var opcoes = { passive: true, once: true };
+    window.addEventListener("wheel", marcar, opcoes);
+    window.addEventListener("touchstart", marcar, opcoes);
+    window.addEventListener("keydown", marcar, { once: true });
+    aoTopo();
+    window.addEventListener("load", aoTopo);
+  })();
+
+  /* ---------------------------------------------------------
+     12 · Arranque
      --------------------------------------------------------- */
 
   pintar();

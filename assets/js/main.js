@@ -869,7 +869,49 @@
   })();
 
   /* =======================================================
-     16. ARRANQUE
+     16. ABERTURA NO TOPO
+
+     O navegador guarda onde a pessoa parou e devolve ela no mesmo
+     ponto na visita seguinte, o que fazia a pagina abrir no meio.
+     Aqui o controle passa a ser nosso: com ancora na URL o salto
+     continua acontecendo, sem ancora a pagina comeca do inicio.
+     ======================================================= */
+
+  var abertura = (function () {
+    var mexeu = false;
+
+    function marcarQueMexeu() {
+      mexeu = true;
+    }
+
+    function aoTopo() {
+      if (location.hash || mexeu) return;
+      // "instant" evita que o scroll-behavior:smooth do CSS anime a subida
+      try {
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      } catch (e) {
+        window.scrollTo(0, 0);
+      }
+    }
+
+    function init() {
+      if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+
+      // se a pessoa ja comecou a rolar durante o carregamento, nao atrapalhamos
+      var opcoes = { passive: true, once: true };
+      window.addEventListener("wheel", marcarQueMexeu, opcoes);
+      window.addEventListener("touchstart", marcarQueMexeu, opcoes);
+      window.addEventListener("keydown", marcarQueMexeu, { once: true });
+
+      aoTopo();
+      window.addEventListener("load", aoTopo);
+    }
+
+    return { init: init };
+  })();
+
+  /* =======================================================
+     17. ARRANQUE
      ======================================================= */
 
   function onResize() {
@@ -881,6 +923,7 @@
   }
 
   function start() {
+    abertura.init();
     prepareBandText();
     whatsapp.init();
     header.init();
@@ -904,7 +947,7 @@
   }
 
   /* =======================================================
-     17. TEXTO DAS FAIXAS
+     18. TEXTO DAS FAIXAS
      Divide o titulo em palavras ou letras para as entradas.
      O aleatorio e semeado, entao o resultado e igual em toda
      carga. Uma copia invisivel guarda a frase inteira para
