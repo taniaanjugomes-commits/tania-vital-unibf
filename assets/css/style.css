@@ -237,23 +237,34 @@ section{padding:76px 0;position:relative}
 /* desktop: a foto vertical vira painel lateral ate o video existir,
    e o heroi passa a respeitar a mesma coluna de conteudo do resto do site */
 @media (min-width:961px){
-  .hero-static{min-height:0;overflow:visible;
-    display:grid;grid-template-columns:1.05fr .95fr;grid-template-rows:auto auto;
-    column-gap:56px;row-gap:0;
+  .hero-static{overflow:visible;
+    display:grid;grid-template-columns:minmax(0,540px) 1fr;grid-template-rows:auto auto;
+    align-content:center;
+    min-height:clamp(560px,56.25vw,760px);   /* 56.25vw = 16:9, a foto cabe inteira */
     max-width:var(--maxw);margin:0 auto;padding:70px 32px 92px}
+
+  /* A foto deitada ocupa o heroi inteiro e sangra ate as bordas da janela.
+     Fica no CSS, dentro desta consulta, para o celular nunca baixar os 74 KB.
+     O degrade da esquerda segura o texto sobre a parede e os livros. */
   .hero-static::before{content:"";position:absolute;inset:0;z-index:-1;
-    background:radial-gradient(900px 460px at 84% 12%,rgba(201,154,82,.20),transparent 64%)}
-  .hero-static__shot{position:relative;inset:auto;
-    grid-column:2;grid-row:1 / span 2;align-self:center;justify-self:center;
-    width:min(390px,100%);aspect-ratio:9/13;border-radius:var(--r-l);overflow:hidden;
-    box-shadow:var(--shadow-l)}
+    left:50%;width:100vw;transform:translateX(-50%);
+    background:
+      linear-gradient(90deg,
+        var(--canvas) 0%,
+        rgba(244,238,227,.92) 24%,
+        rgba(244,238,227,.58) 40%,
+        rgba(244,238,227,.12) 54%,
+        rgba(244,238,227,0) 64%),
+      url("../img/tania-desktop.webp") center 15%/cover no-repeat}
+
+  .hero-static__shot{display:none}
   .hero-static__veil{display:none}
-  .hero-static__note{color:var(--muted);text-shadow:none}
   .hero-static__top{grid-column:1;grid-row:1;padding:0}
   .hero-static__cta{grid-column:1;grid-row:2;padding:28px 0 0;max-width:360px;
     align-items:stretch}
+  .hero-static__sub{margin:0 0 16px;max-width:32ch}
   .hero-static h1{font-size:clamp(46px,4.6vw,62px);max-width:14ch}
-  .hero-static__note{text-align:left}
+  .hero-static__note{color:var(--muted);text-shadow:none;text-align:left}
 }
 
 /* =========================================================
