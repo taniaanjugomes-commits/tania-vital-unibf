@@ -133,6 +133,10 @@ section{padding:76px 0;position:relative}
 
 .btn--wa{background:var(--whatsapp);color:#fff;box-shadow:0 10px 26px rgba(31,168,85,.32)}
 .btn--wa:hover{background:var(--whatsapp-deep)}
+/* Botao cheio marinho, para acao que nao e WhatsApp. Ja existia em
+   perfil.css e pedagogia.css, agora as tres paginas usam o mesmo. */
+.btn--solid{background:var(--navy);color:var(--canvas);box-shadow:var(--shadow-m)}
+.btn--solid:hover{background:var(--brass-deep)}
 .btn--ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line-strong)}
 .btn--ghost:hover{border-color:var(--ink)}
 .btn--ghost-light{background:rgba(244,238,227,.08);color:var(--canvas);border:1.5px solid rgba(244,238,227,.34)}
@@ -541,6 +545,30 @@ main{position:relative}
    Fica entre as modalidades e o catalogo, com tratamento
    proprio para nao repetir o esqueleto de nenhum vizinho.
    ========================================================= */
+/* ---------- convite ao teste de perfil ----------
+   Entra antes das graduacoes, e e a porta de entrada do trafego que
+   vem de Instagram e Facebook. Cartao claro de proposito: a secao
+   seguinte, o catalogo, ja e marinho, e dois blocos escuros colados
+   apagariam os dois. */
+.perfil{background:var(--canvas);padding:0 0 42px}
+.perfil__card{display:flex;flex-direction:column;gap:22px;
+  background:var(--panel);border:1px solid var(--line);border-top:4px solid var(--brass);
+  border-radius:var(--r-m);padding:30px 24px;box-shadow:var(--shadow-m)}
+.perfil__txt h2{font-family:"Instrument Serif",Georgia,serif;font-weight:400;
+  font-size:clamp(27px,6.2vw,38px);color:var(--navy-deep);line-height:1.1;margin-top:12px}
+.perfil__txt > p{margin-top:12px;color:var(--muted);font-size:15.5px;max-width:52ch}
+.perfil__marcas{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.perfil__marcas li{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--brass-deep);
+  background:var(--canvas);border:1px solid var(--line);border-radius:999px;padding:6px 13px}
+.perfil__go{align-self:stretch;text-align:center}
+@media (min-width:721px){
+  .perfil{padding-bottom:56px}
+  .perfil__card{flex-direction:row;align-items:center;justify-content:space-between;
+    gap:44px;padding:38px 40px}
+  .perfil__go{align-self:center;flex:none;white-space:nowrap}
+}
+
 .quiz{background:var(--canvas);padding:0 0 76px}
 .quiz__inner{display:flex;flex-direction:column;gap:20px;
   background:var(--canvas-2);border:1px solid var(--line);border-left:4px solid var(--brass);
