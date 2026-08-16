@@ -199,26 +199,36 @@ section{padding:76px 0;position:relative}
 .hero{position:relative;padding:0}
 /* --hdr e a altura real do cabecalho, medida pelo JS. O heroi ocupa
    exatamente o que sobra da tela, para o botao nunca cair abaixo da dobra. */
-/* O retrato tem o rosto no terco de cima, entao o texto desce e o veu sobe do
-   pe. Nao adianta usar object-position: escalada por altura, a imagem cabe
+/* O retrato foi composto com parede vazia em cima, que e onde o texto entra.
+   Duas camadas: uma desce do topo para segurar o titulo, outra sobe do pe
+   para segurar o botao. O rosto fica na faixa limpa entre as duas.
+   object-position no eixo Y nao age aqui: escalada por altura, a imagem cabe
    exata no contentor e o unico corte que sobra e o horizontal. */
 .hero-static{position:relative;min-height:calc(100svh - var(--hdr,71px));
-             display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+             display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
 .hero-static__shot{position:absolute;inset:0;z-index:0}
-.hero-static__shot img{width:100%;height:100%;object-fit:cover;object-position:50% 12%}
+.hero-static__shot img{width:100%;height:100%;object-fit:cover;object-position:50% 0}
 .hero-static__veil{position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:linear-gradient(180deg,
-    rgba(244,238,227,0) 28%,
-    rgba(244,238,227,.52) 40%,
-    rgba(244,238,227,.93) 50%,
-    rgba(244,238,227,.978) 60%,
-    rgba(244,238,227,.99) 100%)}
-.hero-static__top{position:relative;z-index:2;padding:0 20px 0}
+  background:
+    linear-gradient(180deg,
+      rgba(244,238,227,.86) 0%,
+      rgba(244,238,227,.72) 14%,
+      rgba(244,238,227,.32) 24%,
+      rgba(244,238,227,0) 33%),
+    linear-gradient(0deg,
+      rgba(244,238,227,.98) 0%,
+      rgba(244,238,227,.95) 17%,
+      rgba(244,238,227,.80) 25%,
+      rgba(244,238,227,.30) 31%,
+      rgba(244,238,227,0) 38%)}
+.hero-static__top{position:relative;z-index:2;padding:16px 20px 0}
 .hero-static h1{font-family:"Instrument Serif",Georgia,serif;font-weight:400;
                 font-size:clamp(36px,10.2vw,46px);line-height:1.06;margin-top:14px;
                 letter-spacing:-.012em;max-width:15ch}
 .hero-static h1 em{font-style:italic;color:var(--brass-deep)}
-.hero-static__sub{margin-top:14px;font-size:16px;line-height:1.5;color:var(--muted);max-width:34ch}
+/* Mora junto do botao, e nao embaixo do titulo: la em cima ele caia sobre o
+   cabelo escuro dela e exigia um veu tao forte que lavava a foto inteira. */
+.hero-static__sub{margin:0 0 4px;font-size:16px;line-height:1.5;color:var(--ink);max-width:34ch}
 .hero-static__cta{position:relative;z-index:2;padding:18px 20px 26px;
                   display:flex;flex-direction:column;gap:10px}
 .hero-static__note{font-family:"DM Mono",monospace;font-size:11.5px;color:var(--muted);
