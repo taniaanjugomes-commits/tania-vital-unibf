@@ -199,31 +199,30 @@ section{padding:76px 0;position:relative}
 .hero{position:relative;padding:0}
 /* --hdr e a altura real do cabecalho, medida pelo JS. O heroi ocupa
    exatamente o que sobra da tela, para o botao nunca cair abaixo da dobra. */
+/* O retrato tem o rosto no terco de cima, entao o texto desce e o veu sobe do
+   pe. Nao adianta usar object-position: escalada por altura, a imagem cabe
+   exata no contentor e o unico corte que sobra e o horizontal. */
 .hero-static{position:relative;min-height:calc(100svh - var(--hdr,71px));
-             display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
+             display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
 .hero-static__shot{position:absolute;inset:0;z-index:0}
-.hero-static__shot img{width:100%;height:100%;object-fit:cover;object-position:50% 58%}
+.hero-static__shot img{width:100%;height:100%;object-fit:cover;object-position:50% 12%}
 .hero-static__veil{position:absolute;inset:0;z-index:1;pointer-events:none;
   background:linear-gradient(180deg,
-    rgba(244,238,227,.958) 0%,
-    rgba(244,238,227,.942) 34%,
-    rgba(244,238,227,.80) 50%,
-    rgba(244,238,227,.30) 62%,
-    rgba(244,238,227,0) 72%)}
-.hero-static__top{position:relative;z-index:2;padding:34px 20px 0}
+    rgba(244,238,227,0) 28%,
+    rgba(244,238,227,.52) 40%,
+    rgba(244,238,227,.93) 50%,
+    rgba(244,238,227,.978) 60%,
+    rgba(244,238,227,.99) 100%)}
+.hero-static__top{position:relative;z-index:2;padding:0 20px 0}
 .hero-static h1{font-family:"Instrument Serif",Georgia,serif;font-weight:400;
                 font-size:clamp(36px,10.2vw,46px);line-height:1.06;margin-top:14px;
                 letter-spacing:-.012em;max-width:15ch}
 .hero-static h1 em{font-style:italic;color:var(--brass-deep)}
 .hero-static__sub{margin-top:14px;font-size:16px;line-height:1.5;color:var(--muted);max-width:34ch}
-/* escurecimento suave no pe: sustenta a nota pequena e faz o botao verde saltar */
-.hero-static__foot{position:absolute;left:0;right:0;bottom:0;height:230px;z-index:1;pointer-events:none;
-  background:linear-gradient(0deg,rgba(38,20,9,.58) 0%,rgba(38,20,9,.30) 46%,rgba(38,20,9,0) 100%)}
-.hero-static__cta{position:relative;z-index:2;padding:0 20px 24px;
+.hero-static__cta{position:relative;z-index:2;padding:18px 20px 26px;
                   display:flex;flex-direction:column;gap:10px}
-.hero-static__note{font-family:"DM Mono",monospace;font-size:11.5px;color:rgba(255,248,238,.88);
-                   text-align:center;letter-spacing:.02em;
-                   text-shadow:0 1px 3px rgba(30,16,7,.7)}
+.hero-static__note{font-family:"DM Mono",monospace;font-size:11.5px;color:var(--muted);
+                   text-align:center;letter-spacing:.02em}
 
 /* desktop: a foto vertical vira painel lateral ate o video existir,
    e o heroi passa a respeitar a mesma coluna de conteudo do resto do site */
@@ -238,7 +237,7 @@ section{padding:76px 0;position:relative}
     grid-column:2;grid-row:1 / span 2;align-self:center;justify-self:center;
     width:min(390px,100%);aspect-ratio:9/13;border-radius:var(--r-l);overflow:hidden;
     box-shadow:var(--shadow-l)}
-  .hero-static__veil,.hero-static__foot{display:none}
+  .hero-static__veil{display:none}
   .hero-static__note{color:var(--muted);text-shadow:none}
   .hero-static__top{grid-column:1;grid-row:1;padding:0}
   .hero-static__cta{grid-column:1;grid-row:2;padding:28px 0 0;max-width:360px;
