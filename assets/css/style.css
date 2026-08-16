@@ -601,6 +601,9 @@ main{position:relative}
 .dcard__p b{display:block;font-size:13.5px}
 .dcard__p span{display:block;font-family:"DM Mono",monospace;font-size:10.5px;color:var(--muted);
                text-transform:uppercase;letter-spacing:.04em}
+/* Rotulos com dois cursos quebram em duas linhas no celular. Aperta a
+   entrelinha para o rodape do card nao crescer alem dos vizinhos. */
+.dcard__p span{line-height:1.45}
 @media (min-width:641px){.depo__grid{grid-template-columns:1fr 1fr}}
 @media (min-width:1041px){.depo__grid{grid-template-columns:repeat(4,1fr);gap:18px}}
 
