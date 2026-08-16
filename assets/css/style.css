@@ -562,9 +562,24 @@ main{position:relative}
 }
 
 .perfil{background:var(--canvas);padding:0 0 42px}
-.perfil__card{display:flex;flex-direction:column;gap:22px;
+.perfil__card{position:relative;overflow:hidden;
+  display:flex;flex-direction:column;gap:22px;
   background:var(--panel);border:1px solid var(--line);border-top:4px solid var(--brass);
   border-radius:var(--r-m);padding:30px 24px;box-shadow:var(--shadow-m)}
+
+/* Desenho de mesa no canto, em traco de latao. Entra pela direita e some
+   antes de chegar no texto, com mascara de degrade: imagem por baixo do
+   texto inteiro vira sujeira, de um lado so vira ambiente.
+   No celular fica menor e mais apagado, so no pe do cartao. */
+.perfil__card::before{
+  content:"";position:absolute;z-index:0;pointer-events:none;
+  right:-30px;bottom:-30px;width:270px;height:145px;
+  background:url("../img/mesa-teste.svg") right bottom / contain no-repeat;
+  opacity:.12;
+  -webkit-mask-image:linear-gradient(100deg,transparent 0%,#000 44%);
+          mask-image:linear-gradient(100deg,transparent 0%,#000 44%);
+}
+.perfil__txt,.perfil__go{position:relative;z-index:1}
 .perfil__txt h2{font-family:"Instrument Serif",Georgia,serif;font-weight:400;
   font-size:clamp(27px,6.2vw,38px);color:var(--navy-deep);line-height:1.1;margin-top:12px}
 .perfil__txt > p{margin-top:12px;color:var(--muted);font-size:15.5px;max-width:52ch}
@@ -578,6 +593,12 @@ main{position:relative}
   .perfil__card{flex-direction:row;align-items:center;justify-content:space-between;
     gap:44px;padding:38px 40px}
   .perfil__go{align-self:center;flex:none;white-space:nowrap}
+  /* no desktop sobram 622px livres a direita do texto, entao o desenho
+     pode crescer e ocupar aquele vazio de verdade */
+  .perfil__card::before{right:150px;bottom:-40px;width:430px;height:230px;opacity:.16}
+}
+@media (min-width:1000px){
+  .perfil__card::before{right:210px;width:500px;height:268px}
 }
 
 .quiz{background:var(--canvas);padding:0 0 76px}

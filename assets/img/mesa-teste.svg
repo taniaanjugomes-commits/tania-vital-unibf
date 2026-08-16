@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 300" fill="none"
+     stroke="#c99a52" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+  <!-- pilha de livros, vista de cima em leve angulo -->
+  <g transform="rotate(-6 105 215)">
+    <rect x="38" y="206" width="150" height="20" rx="4"/>
+    <rect x="46" y="188" width="150" height="20" rx="4"/>
+    <rect x="42" y="170" width="150" height="20" rx="4"/>
+    <path d="M52 216h34M60 198h34M56 180h34" stroke-width="1.4" opacity=".55"/>
+  </g>
+
+  <!-- caderno aberto -->
+  <g transform="rotate(-4 350 150)">
+    <path d="M212 62h276a6 6 0 0 1 6 6v176a6 6 0 0 1-6 6H212a6 6 0 0 1-6-6V68a6 6 0 0 1 6-6Z"/>
+    <path d="M350 62v188" stroke-width="1.6" opacity=".7"/>
+
+    <!-- pagina da esquerda: linhas de texto -->
+    <g stroke-width="1.4" opacity=".5">
+      <path d="M228 94h100M228 116h104M228 138h86M228 160h104M228 182h72M228 204h96"/>
+    </g>
+
+    <!-- pagina da direita: as alternativas do teste, tres respondidas -->
+    <g>
+      <circle cx="378" cy="96" r="7"/>
+      <circle cx="378" cy="96" r="3.4" fill="#c99a52" stroke="none"/>
+      <path d="M396 96h74" stroke-width="1.4" opacity=".5"/>
+
+      <circle cx="378" cy="126" r="7"/>
+      <path d="M396 126h58" stroke-width="1.4" opacity=".5"/>
+
+      <circle cx="378" cy="156" r="7"/>
+      <circle cx="378" cy="156" r="3.4" fill="#c99a52" stroke="none"/>
+      <path d="M396 156h66" stroke-width="1.4" opacity=".5"/>
+
+      <circle cx="378" cy="186" r="7"/>
+      <path d="M396 186h48" stroke-width="1.4" opacity=".5"/>
+
+      <circle cx="378" cy="216" r="7"/>
+      <circle cx="378" cy="216" r="3.4" fill="#c99a52" stroke="none"/>
+      <path d="M396 216h70" stroke-width="1.4" opacity=".5"/>
+    </g>
+  </g>
+
+  <!-- caneta apoiada na diagonal -->
+  <g transform="rotate(28 470 232)">
+    <path d="M418 228h84a4 4 0 0 1 4 4v4a4 4 0 0 1-4 4h-84Z"/>
+    <path d="M418 228l-20 6 20 6Z"/>
+    <path d="M404 232.6h8" stroke-width="1.2" opacity=".6"/>
+  </g>
+
+  <!-- xicara, so para aquecer o canto -->
+  <g opacity=".8">
+    <circle cx="132" cy="86" r="26"/>
+    <circle cx="132" cy="86" r="17" stroke-width="1.4" opacity=".55"/>
+    <path d="M158 78c12-4 18 2 16 10s-11 10-17 6" stroke-width="1.6"/>
+  </g>
+</svg>
