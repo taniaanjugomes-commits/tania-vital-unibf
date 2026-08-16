@@ -878,20 +878,36 @@
      ======================================================= */
 
   var abertura = (function () {
+    var CHAVE = "scrollY:" + location.pathname;
     var mexeu = false;
 
-    function marcarQueMexeu() {
-      mexeu = true;
+    function marcarQueMexeu() { mexeu = true; }
+
+    function salvar() {
+      try { sessionStorage.setItem(CHAVE, String(Math.round(window.scrollY))); } catch (e) {}
     }
 
-    function aoTopo() {
-      if (location.hash || mexeu) return;
-      // "instant" evita que o scroll-behavior:smooth do CSS anime a subida
+    function lerSalvo() {
+      try { return parseInt(sessionStorage.getItem(CHAVE) || "0", 10) || 0; } catch (e) { return 0; }
+    }
+
+    function veioDoVoltar() {
+      var nav = performance.getEntriesByType("navigation")[0];
+      return !!nav && nav.type === "back_forward";
+    }
+
+    function irPara(y) {
+      // "instant" evita que o scroll-behavior:smooth do CSS anime o salto
       try {
-        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        window.scrollTo({ top: y, left: 0, behavior: "instant" });
       } catch (e) {
-        window.scrollTo(0, 0);
+        window.scrollTo(0, y);
       }
+    }
+
+    function posicionar() {
+      if (location.hash || mexeu) return;
+      irPara(veioDoVoltar() ? lerSalvo() : 0);
     }
 
     function init() {
@@ -903,8 +919,24 @@
       window.addEventListener("touchstart", marcarQueMexeu, opcoes);
       window.addEventListener("keydown", marcarQueMexeu, { once: true });
 
-      aoTopo();
-      window.addEventListener("load", aoTopo);
+      posicionar();
+      // de novo depois do load: so com as imagens no lugar a pagina tem a
+      // altura final, e antes disso o destino do voltar nem existe
+      window.addEventListener("load", posicionar);
+
+      // quando o navegador guarda a pagina inteira em memoria, nada disso roda
+      // de novo, entao a volta e tratada aqui
+      window.addEventListener("pageshow", function (ev) {
+        if (!ev.persisted) return;
+        var y = lerSalvo();
+        if (y) irPara(y);
+      });
+
+      // pagehide cobre o celular, onde beforeunload muitas vezes nao dispara
+      window.addEventListener("pagehide", salvar);
+      document.addEventListener("visibilitychange", function () {
+        if (document.visibilityState === "hidden") salvar();
+      });
     }
 
     return { init: init };

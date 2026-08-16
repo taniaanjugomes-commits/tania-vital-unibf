@@ -446,21 +446,36 @@
 
   /* ---------------------------------------------------------
      11 · Abertura no topo
-     O navegador devolve a pessoa onde ela parou na visita anterior,
-     e a pagina abria no meio. Com ancora na URL o salto continua.
+     Quem chega abre no comeco, e quem volta pela seta do navegador
+     cai onde estava. Ancora na URL continua mandando em tudo.
      --------------------------------------------------------- */
 
   (function () {
+    var CHAVE = "scrollY:" + location.pathname;
     var mexeu = false;
+
     function marcar() { mexeu = true; }
 
-    function aoTopo() {
-      if (location.hash || mexeu) return;
+    function salvar() {
+      try { sessionStorage.setItem(CHAVE, String(Math.round(window.scrollY))); } catch (e) {}
+    }
+    function lerSalvo() {
+      try { return parseInt(sessionStorage.getItem(CHAVE) || "0", 10) || 0; } catch (e) { return 0; }
+    }
+    function veioDoVoltar() {
+      var nav = performance.getEntriesByType("navigation")[0];
+      return !!nav && nav.type === "back_forward";
+    }
+    function irPara(y) {
       try {
-        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        window.scrollTo({ top: y, left: 0, behavior: "instant" });
       } catch (e) {
-        window.scrollTo(0, 0);
+        window.scrollTo(0, y);
       }
+    }
+    function posicionar() {
+      if (location.hash || mexeu) return;
+      irPara(veioDoVoltar() ? lerSalvo() : 0);
     }
 
     if ("scrollRestoration" in history) history.scrollRestoration = "manual";
@@ -468,8 +483,18 @@
     window.addEventListener("wheel", marcar, opcoes);
     window.addEventListener("touchstart", marcar, opcoes);
     window.addEventListener("keydown", marcar, { once: true });
-    aoTopo();
-    window.addEventListener("load", aoTopo);
+
+    posicionar();
+    window.addEventListener("load", posicionar);
+    window.addEventListener("pageshow", function (ev) {
+      if (!ev.persisted) return;
+      var y = lerSalvo();
+      if (y) irPara(y);
+    });
+    window.addEventListener("pagehide", salvar);
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState === "hidden") salvar();
+    });
   })();
 
   /* ---------------------------------------------------------
