@@ -248,7 +248,7 @@ const RESULTADOS = {
 const DINHEIRO = {
   titulo: "Um número para você se situar",
   base: "Na rede municipal de Campo Grande, um professor começando, com jornada de 20 horas semanais, ganha em média R$ 4.500. É a referência pública, a mais fácil de comparar, e são 20 horas, o que deixa espaço para uma segunda escola ou aula particular.",
-  nota: "Fora da sala, o que se ganha muda conforme a empresa e a cidade. Me chama que eu te falo o que vejo aqui em Campo Grande."
+  nota: "Em escola particular e em empresa não existe um valor de referência: varia muito e cada contratação tem a sua própria negociação."
 };
 
 const FECHAMENTO = {
