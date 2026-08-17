@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- Antes de tudo: o navegador restaura a rolagem anterior logo no inicio do
+     carregamento, e o main.js so roda no fim do body. Sem esta linha aqui em
+     cima, a pagina aparecia no meio ate o script alcanca-la. -->
+<script>try{history.scrollRestoration="manual"}catch(e){}</script>
 <title>Pedagogia combina com você? | Tania Vital · UniBF</title>
 <meta name="description" content="Oito perguntas sinceras sobre o seu momento. No final eu te digo o que eu realmente vejo, com franqueza, sem enrolação." />
 <meta name="theme-color" content="#f4eee3" />

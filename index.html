@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- Antes de tudo: o navegador restaura a rolagem anterior logo no inicio do
+     carregamento, e o main.js so roda no fim do body. Sem esta linha aqui em
+     cima, a pagina aparecia no meio ate o script alcanca-la. -->
+<script>try{history.scrollRestoration="manual"}catch(e){}</script>
 <title>Tania Vital · Consultora educacional UniBF | Graduação, Pós e Segunda Graduação EAD</title>
 <meta name="description" content="Do primeiro oi até o diploma na sua mão. Tania Vital, consultora educacional da UniBF, já ajudou mais de 500 pessoas a conquistarem sua graduação ou pós. Fale direto no WhatsApp." />
 <meta name="theme-color" content="#f4eee3" />
