@@ -203,29 +203,30 @@ section{padding:76px 0;position:relative}
 .hero{position:relative;padding:0}
 /* --hdr e a altura real do cabecalho, medida pelo JS. O heroi ocupa
    exatamente o que sobra da tela, para o botao nunca cair abaixo da dobra. */
-/* O retrato foi composto com parede vazia em cima, que e onde o texto entra.
-   Duas camadas: uma desce do topo para segurar o titulo, outra sobe do pe
-   para segurar o botao. O rosto fica na faixa limpa entre as duas.
+/* O retrato novo saiu do recorte vertical da foto grande, e nele a cabeca
+   dela encosta no topo do quadro: nao existe parede vazia acima em lugar
+   nenhum da origem, entao nenhum recorte cria esse espaco. Por isso o texto
+   inteiro desce para o pe, e o veu sobe de baixo. So um fio de veu fica no
+   topo, para o cabecalho fixo nao brigar com o cabelo dela.
    object-position no eixo Y nao age aqui: escalada por altura, a imagem cabe
    exata no contentor e o unico corte que sobra e o horizontal. */
 .hero-static{position:relative;min-height:calc(100svh - var(--hdr,71px));
-             display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
+             display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
 .hero-static__shot{position:absolute;inset:0;z-index:0}
 .hero-static__shot img{width:100%;height:100%;object-fit:cover;object-position:50% 0}
 .hero-static__veil{position:absolute;inset:0;z-index:1;pointer-events:none;
   background:
     linear-gradient(180deg,
-      rgba(244,238,227,.86) 0%,
-      rgba(244,238,227,.72) 14%,
-      rgba(244,238,227,.32) 24%,
-      rgba(244,238,227,0) 33%),
+      rgba(244,238,227,.42) 0%,
+      rgba(244,238,227,.12) 7%,
+      rgba(244,238,227,0) 14%),
     linear-gradient(0deg,
-      rgba(244,238,227,.98) 0%,
-      rgba(244,238,227,.95) 17%,
-      rgba(244,238,227,.80) 25%,
-      rgba(244,238,227,.30) 31%,
-      rgba(244,238,227,0) 38%)}
-.hero-static__top{position:relative;z-index:2;padding:16px 20px 0}
+      rgba(244,238,227,.99) 0%,
+      rgba(244,238,227,.985) 40%,
+      rgba(244,238,227,.95) 48%,
+      rgba(244,238,227,.60) 54%,
+      rgba(244,238,227,0) 64%)}
+.hero-static__top{position:relative;z-index:2;padding:0 20px 0}
 .hero-static h1{font-family:"Instrument Serif",Georgia,serif;font-weight:400;
                 font-size:clamp(36px,10.2vw,46px);line-height:1.06;margin-top:14px;
                 letter-spacing:-.012em;max-width:15ch}
