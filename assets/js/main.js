@@ -256,7 +256,7 @@
      ======================================================= */
 
   var catalog = (function () {
-    var tabsWrap, panel, search, activeId;
+    var tabsWrap, panel, search, activeId, dica, jaEmpurrou = false, empurrandoAgora = false;
 
     function courseRow(course, category, withMeta) {
       var action = "quero saber mais sobre o curso de " + course +
@@ -339,6 +339,53 @@
        abas saem da frente e o resultado sobe para logo abaixo do campo. */
     function modoBusca(ligado) {
       if (tabsWrap) tabsWrap.classList.toggle("is-off", ligado);
+      if (ligado) esconderDica();
+    }
+
+    /* ---- avisos de que a tira rola ----
+       74% das abas ficam fora da tela no celular, e a unica pista era 20px
+       da terceira pastilha na beira. Tres camadas: desbotado na ponta que
+       tem mais aba, aviso escrito e um empurraozinho na primeira vez. */
+
+    function esconderDica() {
+      // o empurrao move a tira sozinho, e sem esta trava ele apagaria o
+      // proprio aviso que acabou de mostrar
+      if (empurrandoAgora) return;
+      if (dica && !dica.hidden) dica.classList.add("sumiu");
+    }
+
+    function pintarPontas() {
+      if (!tabsWrap) return;
+      var sobra = tabsWrap.scrollWidth - tabsWrap.clientWidth;
+      var rola = sobra > 4;
+      var x = tabsWrap.scrollLeft;
+      tabsWrap.classList.toggle("tem-esq", rola && x > 4);
+      tabsWrap.classList.toggle("tem-dir", rola && x < sobra - 4);
+      if (dica) {
+        dica.hidden = !rola;
+        if (x > 24) esconderDica();
+      }
+    }
+
+    function empurraoUmaVez() {
+      if (!tabsWrap || jaEmpurrou) return;
+      if (reducedMQ.matches) return;                       // respeita quem desliga movimento
+      if (tabsWrap.scrollWidth - tabsWrap.clientWidth < 40) return;
+      jaEmpurrou = true;
+      empurrandoAgora = true;
+      // o encaixe magnetico segura a volta no meio do caminho, entao ele sai
+      // de cena durante o empurrao e o zero e cravado no fim
+      tabsWrap.style.scrollSnapType = "none";
+      tabsWrap.scrollTo({ left: 30, behavior: "smooth" });
+      window.setTimeout(function () {
+        tabsWrap.scrollTo({ left: 0, behavior: "smooth" });
+        window.setTimeout(function () {
+          tabsWrap.scrollLeft = 0;
+          tabsWrap.style.scrollSnapType = "";
+          empurrandoAgora = false;
+          pintarPontas();
+        }, 480);
+      }, 430);
     }
 
     function selectCategory(category) {
@@ -352,6 +399,7 @@
     function init() {
       tabsWrap = $("#catTabs");
       panel = $("#ticket");
+      dica = $("#catDica");
       search = $("#catSearch");
       if (!tabsWrap || !panel || typeof COURSE_CATEGORIES === "undefined") return;
 
@@ -390,10 +438,25 @@
         });
       }
 
+      tabsWrap.addEventListener("scroll", pintarPontas, { passive: true });
+      pintarPontas();
+
+      // o empurrao so acontece quando a tira chega na tela, nao no carregamento
+      if (window.IntersectionObserver) {
+        var olho = new IntersectionObserver(function (entradas) {
+          entradas.forEach(function (e) {
+            if (!e.isIntersecting) return;
+            empurraoUmaVez();
+            olho.disconnect();
+          });
+        }, { threshold: 0.6 });
+        olho.observe(tabsWrap);
+      }
+
       paintCategory(COURSE_CATEGORIES[0]);
     }
 
-    return { init: init };
+    return { init: init, onResize: pintarPontas };
   })();
 
   /* =======================================================
@@ -957,6 +1020,7 @@
 
   function onResize() {
     measureLayout();
+    catalog.onResize();
     header.onResize();
     faq.onResize();
     trail.onResize();

@@ -632,10 +632,30 @@ main{position:relative}
 /* As 7 abas quebravam em quatro linhas no celular e ocupavam 307px, jogando
    o resultado para baixo da dobra. Viram uma tira que rola de lado, com
    sangria ate a borda: uma aba cortada na direita e o aviso de que ha mais. */
+/* Aviso escrito, porque 74% da tira fica fora da tela e nem todo mundo
+   reconhece o padrao de arrastar. Some assim que a pessoa arrasta, e nem
+   aparece em tela grande, onde as abas cabem todas. */
+.cat__dica{display:flex;align-items:center;gap:7px;margin:0 0 9px;
+  font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--brass-soft);transition:opacity .3s var(--ease)}
+.cat__dica svg{width:15px;height:15px;stroke:var(--brass);fill:none;stroke-width:2;
+  stroke-linecap:round;stroke-linejoin:round;animation:dicaVaiVem 1.8s var(--ease) infinite}
+.cat__dica.sumiu{opacity:0;pointer-events:none}
+@keyframes dicaVaiVem{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+
 .cat__tabs{display:flex;flex-wrap:nowrap;gap:8px;margin-bottom:24px;
   overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;
   scroll-snap-type:x proximity;scrollbar-width:none;
-  margin-inline:-20px;padding:2px 20px}
+  margin-inline:-20px;padding:2px 20px;
+  /* sem isto o encaixe alinha a primeira aba ignorando o respiro lateral,
+     e a tira nasce em 20px em vez de zero, acendendo a sombra da esquerda */
+  scroll-padding-inline:20px;
+  /* desbotado nas pontas, ligado pelo JS so no lado que tem mais aba */
+  --fl:0px;--fr:0px;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 var(--fl),#000 calc(100% - var(--fr)),transparent 100%);
+          mask-image:linear-gradient(90deg,transparent 0,#000 var(--fl),#000 calc(100% - var(--fr)),transparent 100%)}
+.cat__tabs.tem-esq{--fl:36px}
+.cat__tabs.tem-dir{--fr:36px}
 .cat__tabs::-webkit-scrollbar{display:none}
 /* A busca atravessa todas as categorias, entao durante ela as abas nao
    servem para nada e saem da frente do resultado. */
@@ -653,7 +673,9 @@ main{position:relative}
 /* Na tela grande cabem todas de uma vez, entao voltam a quebrar em linhas
    e a sangria deixa de fazer sentido. */
 @media (min-width:721px){
-  .cat__tabs{flex-wrap:wrap;overflow:visible;margin-inline:0;padding:0}
+  .cat__tabs{flex-wrap:wrap;overflow:visible;margin-inline:0;padding:0;
+    -webkit-mask-image:none;mask-image:none}
+  .cat__dica{display:none}
 }
 
 .ticket{background:var(--canvas);border-radius:var(--r-l);padding:24px 18px 8px;color:var(--ink)}
