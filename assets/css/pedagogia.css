@@ -289,6 +289,46 @@ button,input{font:inherit;color:inherit}
 }
 .res__bloco--nota li::before{content:"→";color:var(--brass-deep)}
 
+/* ---------- blocos do resultado novo ---------- */
+
+.res__texto{margin:0;font-size:15.5px;line-height:1.55;color:var(--ink)}
+
+/* etiquetas de onde se trabalha */
+.areas{display:flex;flex-wrap:wrap;gap:8px}
+.areas .tag{
+  background:var(--canvas);border:1px solid var(--line);
+  border-radius:999px;padding:7px 14px;
+  font-size:13.5px;color:var(--ink);
+}
+
+/* o convite que aparece antes do resultado inteiro, para quem ja se
+   convenceu e nao precisa rolar mais 400 palavras */
+.res__cedo{
+  margin-top:26px;background:var(--canvas);
+  border:1px solid var(--line);border-left:3px solid var(--brass);
+  border-radius:0 var(--r-m) var(--r-m) 0;padding:18px 20px;
+}
+.res__cedo p{margin:0 0 14px;font-size:15px;line-height:1.5}
+.res__cedo b{color:var(--navy-deep);font-weight:600}
+
+/* o curso que comeca o caminho, em destaque, e os que somam depois */
+.res__curso{
+  background:var(--canvas);border:1px solid var(--line);
+  border-radius:var(--r-m);padding:20px;
+}
+.res__principal{
+  margin:0;font-family:"Instrument Serif",Georgia,serif;
+  font-size:30px;line-height:1.1;color:var(--navy-deep);
+}
+.res__depois{margin-top:20px !important}
+.res__curso ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.res__curso li{
+  position:relative;padding-left:24px;
+  font-size:14.5px;line-height:1.5;color:var(--muted);
+}
+.res__curso li::before{content:"+";position:absolute;left:0;top:-1px;color:var(--brass);font-weight:700}
+.res__curso li b{color:var(--ink);font-weight:600}
+
 .res__grana{
   margin-top:26px;
   background:var(--canvas);
