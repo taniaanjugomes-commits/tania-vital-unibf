@@ -12,27 +12,6 @@
      ======================================================= */
 
   var WHATSAPP = "5567999021267";
-
-  var VIDEO = {
-    ready: true,
-    src: "assets/hero-scrub.mp4",
-    poster: "assets/img/hero-poster.jpg",
-    bytes: 6622482
-  };
-
-  /* Os cinco portoes do heroi estatico. A lista e a unica fonte da
-     verdade: o JS decide e escreve html.scrub, e o CSS so obedece.
-     Sem JS, o padrao continua sendo o heroi estatico, que e completo. */
-  var GATES = [
-    "(max-width: 720px)",
-    "(orientation: portrait) and (max-width: 1024px)",
-    "(orientation: portrait) and (pointer: coarse)",
-    "(orientation: landscape) and (pointer: coarse) and (max-height: 560px)",
-    "(prefers-reduced-motion: reduce)"
-  ];
-  var GATE_REDUCED = 4;
-
-  var HERO_LERP = 0.16;      // suavizacao do scrub por quadro de 60fps
   var HOLD_UP_MS = 2200;     // tempo para completar o caminho segurando
   var HOLD_DOWN_MS = 900;    // tempo para o progresso voltar ao soltar
   var STAGGER_MS = 1100;     // ate aposentar os atrasos de entrada
@@ -666,267 +645,18 @@
     }
     return { init: init };
   })();
-
-  /* =======================================================
-     14. HEROI COM SCRUB
-     O video avanca com a rolagem. Busca em Blob, lerp normalizado
-     por tempo, seeks com portao e escrita no DOM so na mudanca.
-     ======================================================= */
-
-  var heroScrub = (function () {
-    var video, stage, ring, poster, bands = [];
-    var target = 0, shown = 0, raf = null, lastFrame = 0;
-    var seekBusy = false, pendingSeek = null;
-    var heroVisible = false, active = false, loadStarted = false;
-    var introK = 0, introStart = 0;
-    var mqls = [], previewOverride = false;
-
-    /* ---- seeks: nunca dois ao mesmo tempo, e sem travar ---- */
-    function requestSeek(time) {
-      if (!video || !video.duration) return;
-      if (seekBusy) { pendingSeek = time; return; }
-      seekBusy = true;
-      video.currentTime = time;
-    }
-
-    /* ---- faixas de legenda ---- */
-    function paintBands(p) {
-      bands.forEach(function (band, i) {
-        var fade = Math.min(0.02, (band.b - band.a) / 3);
-        var fadeIn = i === 0 ? 0 : fade;                    // a primeira abre assentada
-        var fadeOut = i === bands.length - 1 ? 0 : fade;    // a ultima nao some
-        var opacity = smoothstep(p, band.a, band.a + fadeIn) *
-                      (1 - smoothstep(p, band.b - fadeOut, band.b));
-
-        var ramp = Math.min(0.025, (band.b - band.a) * 0.35);
-        var k = clamp((p - band.a) / ramp, 0, 1);
-        if (i === 0) k = Math.max(k, introK);
-
-        var opQ = Math.round(opacity * 100) / 100;
-        var kQ = Math.round(k * 125) / 125;
-        if (opQ !== band.opacity) { band.opacity = opQ; band.el.style.opacity = opQ; }
-        if (kQ !== band.k) { band.k = kQ; band.el.style.setProperty("--k", kQ); }
-      });
-    }
-
-    /* ---- laco que descansa quando converge ---- */
-    function tick(now) {
-      var dt = Math.min(100, now - (lastFrame || now));
-      lastFrame = now;
-      shown += (target - shown) * (1 - Math.pow(1 - HERO_LERP, dt / 16.667));
-
-      if (introK < 1 && introStart) introK = clamp((now - introStart) / 900, 0, 1);
-
-      var converged = Math.abs(target - shown) < 0.0005 && introK >= 1;
-      if (converged) shown = target;
-
-      if (video && video.duration) requestSeek(shown * video.duration);
-      paintBands(shown);
-
-      if (converged) { raf = null; lastFrame = 0; }
-      else { raf = requestAnimationFrame(tick); }
-    }
-
-    function wake() {
-      if (raf !== null || !active || !heroVisible) return;
-      lastFrame = 0;
-      raf = requestAnimationFrame(tick);
-    }
-
-    function follow() {
-      target = progressThrough(metrics.hero);
-      wake();
-    }
-
-    /* ---- carga do video em Blob, com anel de progresso ---- */
-    function fail() {
-      if (stage) stage.classList.add("video-failed");
-    }
-
-    function loadBlob() {
-      var controller = new AbortController();
-      var watchdog = setTimeout(function () { controller.abort(); }, 20000);
-
-      return fetch(VIDEO.src, { priority: "low", signal: controller.signal })
-        .then(function (res) {
-          if (!res.ok) throw new Error("http " + res.status);
-          var total = Number(res.headers.get("Content-Length")) || VIDEO.bytes || 1;
-          var reader = res.body.getReader();
-          var chunks = [], received = 0, lastPaint = 0;
-
-          function pump() {
-            return reader.read().then(function (r) {
-              if (r.done) return;
-              clearTimeout(watchdog);
-              watchdog = setTimeout(function () { controller.abort(); }, 20000);
-
-              chunks.push(r.value);
-              received += r.value.length;
-
-              var frac = Math.min(1, received / total);
-              var now = performance.now();
-              if (ring && (now - lastPaint > 100 || frac === 1)) {
-                lastPaint = now;
-                ring.style.setProperty("--ld", Math.round(126 * (1 - frac)));
-              }
-              return pump();
-            });
-          }
-
-          return pump().then(function () {
-            clearTimeout(watchdog);
-            if (ring) ring.style.setProperty("--ld", 0);
-            video.src = URL.createObjectURL(new Blob(chunks));
-            video.load();
-            video.addEventListener("canplay", function () {
-              requestSeek(progressThrough(metrics.hero) * video.duration);
-              stage.classList.add("video-ready");
-            }, { once: true });
-          });
-        });
-    }
-
-    function startLoading() {
-      if (loadStarted) return;
-      loadStarted = true;
-      if (poster) poster.style.backgroundImage = "url('" + VIDEO.poster + "')";
-
-      // o poster ganha a corrida de banda de proposito: so depois dele o video comeca
-      var kicked = false;
-      function kick() {
-        if (kicked) return;
-        kicked = true;
-        loadBlob().catch(fail);
-      }
-      var img = new Image();
-      img.onload = kick;
-      img.onerror = kick;
-      img.src = VIDEO.poster;
-      setTimeout(kick, 4000);
-    }
-
-    /* ---- ligar e desligar ---- */
-    function enable() {
-      if (active || !VIDEO.ready) return;
-      active = true;
-      document.documentElement.classList.add("scrub");
-      measureLayout();                 // a altura do heroi acabou de mudar
-      startLoading();
-      introStart = performance.now();
-      introK = 0;
-      subscribeScroll(follow);
-      bands.forEach(function (b) { b.opacity = -1; b.k = -1; });
-      paintBands(progressThrough(metrics.hero));
-      follow();
-    }
-
-    function disable() {
-      if (!active) return;
-      active = false;
-      document.documentElement.classList.remove("scrub");
-      unsubscribeScroll(follow);
-      if (raf !== null) { cancelAnimationFrame(raf); raf = null; }
-      measureLayout();
-    }
-
-    function apply() {
-      var blocked = mqls.some(function (mq, i) {
-        // ?video=1 e so para a Tania conferir quando o Windows dela esta com
-        // animacoes desligadas. Ignora apenas o portao de movimento reduzido,
-        // nunca os de tamanho e de toque: video em celular continua proibido.
-        if (previewOverride && i === GATE_REDUCED) return false;
-        return mq.matches;
-      });
-      if (blocked) disable();
-      else enable();
-    }
-
-    function init() {
-      video = $("#hero");
-      stage = $("#stage");
-      ring = $("#ring");
-      poster = $("#poster");
-
-      bands = $$(".band").map(function (el) {
-        return {
-          el: el,
-          a: parseFloat(el.dataset.a),
-          b: parseFloat(el.dataset.b),
-          opacity: -1,
-          k: -1
-        };
-      });
-
-      if (video) {
-        video.addEventListener("seeked", function () {
-          seekBusy = false;
-          if (pendingSeek !== null) {
-            var t = pendingSeek;
-            pendingSeek = null;
-            requestSeek(t);
-          }
-        });
-        // sem isso um seek com erro trancaria o portao para sempre
-        video.addEventListener("error", function () {
-          seekBusy = false;
-          pendingSeek = null;
-        });
-      }
-
-      previewOverride = new URLSearchParams(location.search).get("video") === "1";
-      mqls = GATES.map(function (q) { return window.matchMedia(q); });
-      mqls.forEach(function (mq) { mq.addEventListener("change", apply); });
-
-      var hero = $(".hero");
-      if (hero && VIDEO.ready && "IntersectionObserver" in window) {
-        new IntersectionObserver(function (entries) {
-          entries.forEach(function (e) {
-            heroVisible = e.isIntersecting;
-            wake();
-          });
-        }, { threshold: 0 }).observe(hero);
-      }
-
-      apply();
-    }
-
-    return {
-      init: init,
-      apply: apply,
-      onResize: function () { if (active) follow(); },
-      pin: function () {
-        bands.forEach(function (b) {
-          b.el.style.opacity = 1;
-          b.el.style.setProperty("--k", 1);
-          b.opacity = -1;
-          b.k = -1;
-        });
-      },
-      unpin: function () {
-        // limpa o que o pin escreveu, para o scroll voltar a mandar
-        bands.forEach(function (b) {
-          b.el.style.opacity = "";
-          b.el.style.removeProperty("--k");
-          b.opacity = -1;
-          b.k = -1;
-        });
-      }
-    };
-  })();
-
   /* =======================================================
      15. MOVIMENTO REDUZIDO, AO VIVO E NOS DOIS SENTIDOS
      ======================================================= */
 
   var motion = (function () {
-    var modules = [trail, pathHold, reveals, heroScrub];
+    var modules = [trail, pathHold, reveals];
 
     function pin() {
       modules.forEach(function (m) { if (m.pin) m.pin(); });
     }
     function unpin() {
       modules.forEach(function (m) { if (m.unpin) m.unpin(); });
-      heroScrub.apply();
     }
 
     function init() {
@@ -1024,12 +754,10 @@
     header.onResize();
     faq.onResize();
     trail.onResize();
-    heroScrub.onResize();
   }
 
   function start() {
     abertura.init();
-    prepareBandText();
     whatsapp.init();
     header.init();
     menu.init();
@@ -1040,7 +768,6 @@
     pathHold.init();
     reveals.init();
     floatingButton.init();
-    heroScrub.init();
     motion.init();
 
     window.addEventListener("resize", onResize);
@@ -1048,84 +775,6 @@
     window.addEventListener("load", onResize);
     document.addEventListener("visibilitychange", function () {
       document.body.classList.toggle("paused", document.hidden);
-    });
-  }
-
-  /* =======================================================
-     18. TEXTO DAS FAIXAS
-     Divide o titulo em palavras ou letras para as entradas.
-     O aleatorio e semeado, entao o resultado e igual em toda
-     carga. Uma copia invisivel guarda a frase inteira para
-     leitores de tela.
-     ======================================================= */
-
-  function seededRandom(seed) {
-    var s = seed >>> 0;
-    return function () { return (s = (s * 1664525 + 1013904223) >>> 0) / 4294967296; };
-  }
-
-  function buildBlurLayers(el, text) {
-    el.innerHTML = "";
-    ["sr", "soft", "sharp"].forEach(function (cls) {
-      var span = document.createElement("span");
-      span.className = cls;
-      span.textContent = text;
-      if (cls !== "sr") span.setAttribute("aria-hidden", "true");
-      el.appendChild(span);
-    });
-  }
-
-  function buildSplitLayers(el, text, mode, seed) {
-    var random = seededRandom(seed);
-    el.textContent = "";
-
-    var reader = document.createElement("span");
-    reader.className = "sr";
-    reader.textContent = text;
-    el.appendChild(reader);
-
-    var visual = document.createElement("span");
-    visual.setAttribute("aria-hidden", "true");
-
-    var words = text.split(" ");
-    var totalChars = text.replace(/ /g, "").length;
-    var charIndex = 0;
-
-    words.forEach(function (word, wi) {
-      var wordEl = document.createElement("span");
-      wordEl.className = "w";
-      wordEl.style.setProperty("--th", (wi / Math.max(1, words.length) * 0.42).toFixed(3));
-
-      if (mode === "char") {
-        word.split("").forEach(function (ch) {
-          var charEl = document.createElement("span");
-          charEl.className = "c";
-          charEl.textContent = ch;
-          charEl.style.setProperty("--th",
-            (charIndex / Math.max(1, totalChars) * 0.4 + random() * 0.06).toFixed(3));
-          charEl.style.setProperty("--jx", Math.round((random() * 2 - 1) * 26) + "px");
-          wordEl.appendChild(charEl);
-          charIndex++;
-        });
-      } else {
-        wordEl.textContent = word;
-      }
-
-      visual.appendChild(wordEl);
-      if (wi < words.length - 1) visual.appendChild(document.createTextNode(" "));
-    });
-
-    el.appendChild(visual);
-  }
-
-  function prepareBandText() {
-    $$(".band .split").forEach(function (el, i) {
-      var text = el.textContent.trim();
-      if (el.classList.contains("e-blur")) {
-        buildBlurLayers(el, text);
-      } else {
-        buildSplitLayers(el, text, el.getAttribute("data-split") || "word", 1337 + i * 977);
-      }
     });
   }
 
