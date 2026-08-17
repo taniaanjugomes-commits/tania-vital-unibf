@@ -335,9 +335,16 @@
       return COURSE_CATEGORIES.filter(function (c) { return c.id === id; })[0];
     }
 
+    /* A busca atravessa todas as categorias, entao enquanto ela esta ativa as
+       abas saem da frente e o resultado sobe para logo abaixo do campo. */
+    function modoBusca(ligado) {
+      if (tabsWrap) tabsWrap.classList.toggle("is-off", ligado);
+    }
+
     function selectCategory(category) {
       activeId = category.id;
       if (search) search.value = "";
+      modoBusca(false);
       paintTabs();
       paintCategory(category);
     }
@@ -373,9 +380,11 @@
         search.addEventListener("input", function () {
           var q = search.value;
           if (q.trim() === "") {
+            modoBusca(false);
             paintTabs();
             paintCategory(categoryById(activeId));
           } else {
+            modoBusca(true);
             paintSearch(q);
           }
         });
