@@ -148,18 +148,34 @@
      nao vira problema: o segundo colocado aparece no resultado.
      --------------------------------------------------------- */
 
-  var vencedor = "SALA", segundo = null;
+  var vencedor = "SALA", segundo = null, semCaminho = false, espalhado = false;
+
+  /* So contam as perguntas que apontam caminho: o filtro do Ensino Medio
+     e a pergunta de fecho ficam de fora. */
+  function contaCaminho(q) { return !q.filtro && !q.fecho; }
+
+  function declarouSaida() {
+    var q = PERGUNTAS.filter(function (x) { return x.fecho; })[0];
+    if (!q) return false;
+    var i = indice(q.id);
+    return i >= 0 && !!q.opcoes[i].saida;
+  }
 
   function apurar() {
     var pontos = {};
     Object.keys(CAMINHOS).forEach(function (k) { pontos[k] = 0; });
-    PERGUNTAS.filter(function (q) { return !q.filtro; }).forEach(function (q) {
+    PERGUNTAS.filter(contaCaminho).forEach(function (q) {
       var i = indice(q.id);
       if (i >= 0) pontos[q.opcoes[i].c] += 1;
     });
     var ordem = Object.keys(pontos).sort(function (a, b) { return pontos[b] - pontos[a]; });
     vencedor = ordem[0];
     segundo = pontos[ordem[1]] > 0 && pontos[ordem[1]] >= pontos[ordem[0]] - 1 ? ordem[1] : null;
+
+    /* So a pergunta declarada tira a pessoa do caminho. Topo baixo nao
+       significa desinteresse: pode ser interesse em varios. */
+    semCaminho = declarouSaida();
+    espalhado = !semCaminho && pontos[vencedor] <= LIMITE_ESPALHADO;
     return pontos;
   }
 
@@ -168,13 +184,16 @@
      --------------------------------------------------------- */
 
   function mensagem() {
-    var r = RESULTADOS[vencedor];
     var linhas = [
       "Olá Tania! " + origem() + " fiz o teste de Pedagogia.",
-      "",
-      "Meu caminho: " + r.titulo
+      ""
     ];
-    if (segundo) linhas.push("Também apareceu: " + CAMINHOS[segundo]);
+    if (semCaminho) {
+      linhas.push("Resultado: nenhum dos caminhos da Pedagogia é o meu.");
+    } else {
+      linhas.push("Meu caminho: " + RESULTADOS[vencedor].titulo);
+      if (segundo) linhas.push("Também apareceu: " + CAMINHOS[segundo]);
+    }
     linhas.push("");
 
     var nome = el("campoNome").value.trim();
@@ -232,8 +251,23 @@
     revelar(bloqueio);
   }
 
+  function mostrarSemCaminho() {
+    el("scTitulo").textContent = SEM_CAMINHO.titulo;
+    el("scLead").textContent = SEM_CAMINHO.lead;
+    lista(el("scPontos"), SEM_CAMINHO.pontos);
+    var b = el("scBotao");
+    b.textContent = SEM_CAMINHO.botao;
+    b.href = SEM_CAMINHO.destino;
+    el("scZap").textContent = SEM_CAMINHO.zap;
+    atualizarWhats();
+    painel.hidden = true;
+    bloqueio.hidden = true;
+    revelar(el("semCaminho"));
+  }
+
   function mostrarResultado() {
     apurar();
+    if (semCaminho) { mostrarSemCaminho(); return; }
     var r = RESULTADOS[vencedor];
 
     el("resTitulo").textContent = r.titulo;
@@ -243,7 +277,10 @@
     etiquetas(el("listaOnde"), r.onde);
 
     var tambem = el("resTambem");
-    if (segundo) {
+    if (espalhado) {
+      tambem.hidden = false;
+      el("resTambemTxt").textContent = AVISO_ESPALHADO;
+    } else if (segundo) {
       tambem.hidden = false;
       el("resTambemTxt").textContent =
         "Você também se identificou bastante com " + CAMINHOS[segundo] +
@@ -289,11 +326,13 @@
     form.reset();
     painel.hidden = true;
     bloqueio.hidden = true;
+    el("semCaminho").hidden = true;
     form.hidden = false;
     irPara(0);
   }
   el("btnRefazer").addEventListener("click", refazer);
   el("btnRefazer2").addEventListener("click", refazer);
+  el("btnRefazer3").addEventListener("click", refazer);
 
   form.hidden = false;
   pintar();

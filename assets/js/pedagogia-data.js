@@ -120,6 +120,17 @@ const PERGUNTAS = [
       { t: "Entender por que alguém não está conseguindo", c: "APOIO" },
       { t: "Usar a educação para mudar uma realidade", c: "SOCIAL" }
     ]
+  },
+  {
+    id: "q7",
+    fecho: true,
+    texto: "Depois de ver esses caminhos, o que você sente?",
+    opcoes: [
+      { t: "Um deles me chamou muito a atenção" },
+      { t: "Gostei de mais de um, quero entender melhor" },
+      { t: "Achei interessante, mas não é o que eu procuro agora", saida: true },
+      { t: "Sinceramente, nenhum deles é o que eu quero", saida: true }
+    ]
   }
 ];
 
@@ -240,6 +251,40 @@ const RESULTADOS = {
     ]
   }
 };
+
+
+/* ---------------------------------------------------------
+   6 · Quando Pedagogia nao e o caminho
+
+   So a pergunta declarada leva aqui. A deteccao silenciosa por pontuacao
+   baixa foi testada e descartada: com 2 pontos no topo existem duas
+   causas opostas, quem nao se interessou por nada e quem se interessou
+   por varios caminhos, e dizer "nao e o seu caminho" para a segunda
+   seria pior que o defeito original. O topo baixo agora vira um aviso
+   de interesse espalhado, dentro do proprio resultado.
+
+   A saida nao pode ser um beco. Quem descarta Pedagogia com honestidade
+   e exatamente o publico do teste de perfil, e continua sendo lead.
+   --------------------------------------------------------- */
+
+const SEM_CAMINHO = {
+  titulo: "Então Pedagogia não é o seu caminho, e que bom que você descobriu agora",
+  lead: "Descobrir isso em seis perguntas é muito melhor do que descobrir no terceiro semestre. E isso não fecha nada: só quer dizer que o seu curso é outro.",
+  pontos: [
+    "Existem quase noventa cursos no catálogo da UniBF, de três meses a cinco anos.",
+    "Tem gente que chega aqui pensando em Pedagogia e sai para Administração, Design, Tecnologia ou Saúde.",
+    "O próximo passo é descobrir com o que você combina, e para isso eu tenho um teste próprio."
+  ],
+  botao: "Fazer o teste de perfil profissional",
+  destino: "perfil.html?origem=pedagogia",
+  zap: "Ou me chama no WhatsApp que a gente conversa direto."
+};
+
+/* Abaixo disso o teste avisa que o interesse ficou espalhado, em vez de
+   fingir uma certeza que a pontuacao nao sustenta. */
+const LIMITE_ESPALHADO = 2;
+
+const AVISO_ESPALHADO = "Seus pontos ficaram bem distribuídos: vários caminhos te chamaram atenção, e nenhum se destacou muito. Isso é comum e não é indecisão. Este aqui foi o que apareceu um pouco mais.";
 
 /* ---------------------------------------------------------
    5 · Blocos fixos

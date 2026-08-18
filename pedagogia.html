@@ -106,7 +106,7 @@
           <div class="form__head">
             <div class="bar" aria-hidden="true"><span id="barFill"></span></div>
             <p class="form__meta">
-              <span id="stepLabel">Pergunta 1 de 10</span>
+              <span id="stepLabel">Pergunta 1 de 11</span>
               <em>Não existe resposta errada</em>
             </p>
           </div>
@@ -215,6 +215,35 @@
             </a>
           </div>
           <button class="res__refazer" id="btnRefazer2" type="button">Voltar ao teste</button>
+        </div>
+
+        <!-- ===== nenhum caminho combinou ===== -->
+        <div class="res res--saida" id="semCaminho" hidden tabindex="-1">
+          <span class="res__mark" aria-hidden="true">✦</span>
+          <span class="kicker">Sinceramente</span>
+          <h2 class="display" id="scTitulo"></h2>
+          <p class="res__lead" id="scLead"></p>
+
+          <div class="res__bloco">
+            <h3>O que isso quer dizer</h3>
+            <ul id="scPontos"></ul>
+          </div>
+
+          <div class="res__cedo">
+            <p><b>O próximo passo é descobrir com o que você combina.</b> São treze perguntas sobre o seu jeito, e no fim você vê as áreas que fazem sentido para você e os cursos que levam até elas.</p>
+            <a class="btn btn--solid btn--largo" id="scBotao" href="perfil.html?origem=pedagogia"></a>
+          </div>
+
+          <div class="res__fala">
+            <h3>Prefere conversar direto?</h3>
+            <p class="res__fala-sub" id="scZap"></p>
+            <a class="btn btn--wa" href="https://wa.me/5567999021267?text=Ol%C3%A1%20Tania!%20Fiz%20o%20teste%20de%20Pedagogia%20e%20vi%20que%20nao%20e%20o%20meu%20caminho.%20Queria%20sua%20ajuda%20para%20achar%20o%20curso%20certo." target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" aria-hidden="true" width="19" height="19"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-2.9-1.3-4.9-4.3-5-4.5-.2-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.3-.3.6-.4.8-.4h.6c.2 0 .4-.1.7.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.3.3c-.1.1-.3.3-.1.6.1.3.6 1.1 1.4 1.8 1 .9 1.8 1.1 2 1.3.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.6.3.1.2.1.8-.1 1.5Z"/></svg>
+              Falar com a Tania no WhatsApp
+            </a>
+          </div>
+
+          <button class="res__refazer" id="btnRefazer3" type="button">Refazer o teste</button>
         </div>
 
       </div>

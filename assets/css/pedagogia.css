@@ -474,3 +474,13 @@ button,input{font:inherit;color:inherit}
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.001ms !important;transition-duration:.001ms !important}
 }
+
+/* ---------- quando nenhum caminho combinou ----------
+   A saida nao pode parecer castigo, entao usa a mesma casca dos outros
+   resultados. O botao que leva ao teste de perfil ocupa a largura toda,
+   porque e a acao principal desta tela. */
+.btn--largo{width:100%}
+.res--saida .res__mark{background:var(--brass-soft);color:var(--navy-deep)}
+@media (min-width:600px){
+  .res--saida .btn--largo{width:auto;padding-inline:34px}
+}
