@@ -275,3 +275,44 @@ button,input{font:inherit;color:inherit}
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.001ms !important;transition-duration:.001ms !important}
 }
+
+/* ---------- foto na abertura ----------
+   Mesmas regras da pagina de Pedagogia, para as duas terem a mesma cara.
+   Esta pagina e o destino dos links de Instagram e Facebook, e era a
+   unica onde ela nao aparecia. */
+.hero__grid{display:grid;gap:26px}
+.hero__photo{position:relative;margin-top:6px}
+.hero__halo{
+  position:absolute;z-index:1;
+  left:50%;top:22px;
+  width:min(84%,340px);height:calc(100% - 60px);
+  transform:translateX(calc(-50% + 14px));
+  background:var(--brass-soft);
+  border-radius:var(--r-l);
+  opacity:.5;
+}
+.hero__photo img{
+  position:relative;z-index:2;
+  width:min(84%,340px);height:auto;margin-inline:auto;
+  border-radius:var(--r-l);
+  box-shadow:var(--shadow-l);
+}
+.hero__tag{
+  position:relative;z-index:3;
+  margin:-18px auto 0;width:min(100%,300px);
+  background:var(--panel);
+  border:1px solid var(--line-soft);
+  border-left:3px solid var(--brass);
+  border-radius:0 var(--r-s) var(--r-s) 0;
+  padding:12px 16px;
+  box-shadow:var(--shadow-m);
+}
+.hero__tag b{display:block;font-family:"Instrument Serif",Georgia,serif;font-size:19px;color:var(--navy-deep)}
+.hero__tag span{display:block;font-size:12.5px;color:var(--muted)}
+
+@media (min-width:900px){
+  .hero__grid{grid-template-columns:1.06fr .94fr;align-items:center;gap:52px}
+  .hero__photo{margin-top:0}
+  .hero__photo img{width:min(100%,420px)}
+  .hero__tag{position:absolute;right:0;bottom:14px;margin:0;width:262px}
+}
