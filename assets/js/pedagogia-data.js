@@ -271,7 +271,7 @@ const SEM_CAMINHO = {
   titulo: "Então Pedagogia não é o seu caminho, e que bom que você descobriu agora",
   lead: "Descobrir isso em seis perguntas é muito melhor do que descobrir no terceiro semestre. E isso não fecha nada: só quer dizer que o seu curso é outro.",
   pontos: [
-    "São 89 graduações no catálogo da UniBF: tecnólogos a partir de 1 ano e 8 meses, licenciaturas de 4 anos e bacharelados de 3 a 5 anos.",
+    "São 90 graduações no catálogo da UniBF: tecnólogos a partir de 1 ano e 8 meses, licenciaturas de 4 anos e bacharelados de 3 a 5 anos.",
     "Tem gente que chega aqui pensando em Pedagogia e sai para Administração, Design, Tecnologia ou Saúde.",
     "O próximo passo é descobrir com o que você combina, e para isso eu tenho um teste próprio."
   ],
